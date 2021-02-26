@@ -8,20 +8,20 @@ d3.json(queryUrl, function(data) {
 });
 
 function createFeatures(earthquakeinfo) {
-    
+    // Define a function we want to run once for each feature in the features array
+  // Give each feature a popup describing the place and time of the earthquake
     function onEachFeature(feature, layer) {
         layer.bindPopup("<h3>" + feature.properties.place + 
         "</h3><hr><p>" + new Date(feature.properties.time) + "<hr><p>" + "Magnitude: " + feature.properties.mag + "<hr><p>" + "Depth(km): " + feature.geometry.coordinates[2] + "</p>");
     }
-
+    // define magnitude size as 3x when called so radius size isn't too small
     function earthquakeradius(magnitude) {
         return magnitude * 3;
     };
 
-    // function earthquakedepth(deepness) {
-    //     return deepness *1;
-    // }
+  
 
+    // define the colors associated with the depth of the earthquake
     function depthcolor(earthquakedepth) {
         if (earthquakedepth > 90) {
             return '#581845'
@@ -38,13 +38,16 @@ function createFeatures(earthquakeinfo) {
         }
     };
 
-
+// Create a GeoJSON layer containing the features array 
+  // Run the onEachFeature function once for each piece of data in the array
     var earthquakes = L.geoJSON(earthquakeinfo, {
         onEachFeature: onEachFeature,
         pointToLayer: function(_feature, latlng) {
             //console.log(_feature.geometry.coordinates[2]);
             return L.circleMarker(latlng, {
+                //radius mapped to magnitude
                 radius: earthquakeradius(_feature.properties.mag),
+                //color mapped to depth found under the coordinates array. Depth is number 3
                 color: depthcolor(_feature.geometry.coordinates[2]),
                 fillOpacity: false
                 })   
@@ -52,14 +55,15 @@ function createFeatures(earthquakeinfo) {
             
         }
     });
-
+// Sending earthquakes layer to the createMap function
     createMap(earthquakes);
 
 }
 
-
+//creating a function for to create the map 
 function createMap(earthquakes) {
 
+    // Define streetmap and darkmap layers
     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
         tileSize: 512,
@@ -93,10 +97,15 @@ function createMap(earthquakes) {
         layers: [streetmap, earthquakes]
     });
 
+  
+  // Add the layer control to the map
+
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
 
+
+    // creating legend
     var legend = L.control({position: "bottomright"});
     
     legend.onAdd = function(map) {
@@ -104,7 +113,7 @@ function createMap(earthquakes) {
         var div = L.DomUtil.create("div", "info legend"),
         earthquakedepthh = [-10, 10 ,30, 50, 70, 90];
         
-
+        // define depth color again in the legend variable so that it can be called referenced in the legend key 
         function depthcolor(earthquakedepth) {
             if (earthquakedepth > 90) {
                 return '#581845'
