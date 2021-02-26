@@ -1,4 +1,9 @@
-D3 Homework - Data Journalism and D3
-The point of this challenge was to be able to use D3 to plot certain elements pulled from the data in the provided csv. We had to take two factors (healthcare vs poverty) that were classified by state and plot those points onto a graph. We had to create axis lables for the graph as well as customize the plots/circles that needed to be plotted.
+Leaflet Homework - Visualizing Data with Leaflet
+Goal is to visualize a USGS earthquake. 
+Pulled GeoJson data from the USGS website for earthquakes over the last 7 days.
 
-SVG, d3.csv, and linear scales are major components of this exercise.  I had to create an SVG wrapper that provided me with an area for my graph, then I had to ensure the margins were correct. I had to import the data via the csv and parse for only the two columns that I planned on plotting.  I then had to create scalar functions that would allow my x and y axis to be defined via the domain pulled from the max numbers within the two fields I would be using to plot.  Once the axes were appended to the chart I had to create circles which represented data points based on the two columns I plotted. A data point was created for each state. Then I had to create circle lables so the state abbreviation was displayed on the correct circe. Certain attributes had to be factored in to ensure the labels fit onto the circles.
+To visualize the data, a map needed to be created using Leaflet that showd splots of all of the earthquakes from the last 7 days data set based on their longitude and latitude.
+
+Created map layers using leaflet to show earthquake layer on dark and street maps. Earthquake data was shown via markers. On click, markers display a brief overview of key earthquake details. Markers reflected the magnitude of the earthquake via the size of the radius, higher magnitudes had a larger radius and lower magnitudes had a smaller radius. The depth was reflected via marker color intensity. The deeper the earthquake the darker the marker.
+
+A legend was created to provide context for the map and show earthquake details shown via the marker size and color.
